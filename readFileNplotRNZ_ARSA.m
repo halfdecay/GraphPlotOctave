@@ -1,5 +1,5 @@
 function readFileNplotRNZ_ARSA()
-   filename = "C1yauza_elcetron_osc00010.txt";
+   filename = "C1yauza_elcetron_osc00003.txt";
    data = dlmread(filename, ',');
   [last_shift, column_size] = size(data);
   first_shift = 6;  
