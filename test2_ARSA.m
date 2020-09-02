@@ -1,5 +1,7 @@
 function test_ARSA()
+
      filename = "C1yauza_elcetron_osc00003.txt";
+     
    data = dlmread(filename, ',');
   [last_shift, column_size] = size(data);
   first_shift = 6;  
@@ -14,6 +16,7 @@ function test_ARSA()
   volt_new = sgf1(10:size(sgf1)-10);
   wave=1310;
   
+
 ##  ------------------------------------
   if (wave == 1550) 
         power= volt_new *0.148315667734024+0.001240916854482;

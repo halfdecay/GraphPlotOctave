@@ -1,16 +1,8 @@
-
-
 function test_ARSA()
-  global K1
-  global T1
-  global K2
-  global T2
-  global K3
-  global T3
+
 
   
-  
-  filename = "C1yauza_elcetron_osc00003.txt";
+  filename = "C1yauza_elcetron_osc00002.txt";
   data = dlmread(filename, ',');
   [last_shift, column_size] = size(data);
   first_shift = 6;  
@@ -51,10 +43,10 @@ function test_ARSA()
   t=time_new(iter-15:size(time_new));
 
   Dr=10^12;
-  R1=200000000000;
-  R2=200000000;
+  R1=20;
+  R2=20;
   t1=10^-8;
-  C=10^-16;
+  C=10^-1;
   A=((R1+R2)/R1/R2/C);
 
   part1 = (Dr/R1/R2/C);
@@ -126,19 +118,53 @@ function test_ARSA()
 ##  axis([-0.00004, 0.001,-0.05,0.2]);
 
 ##
-x0= [R1,R2,C];
+x0= [R1,R2,C,K1,T1,K2,T2,K3,T3,t1,Dr];
+
 
 [x, fval, info] = fsolve (@f,x0)
+R1 = x(1)
+R2 = x(2)
+C = x(3)
+persistent K1 = x(4)
+persistent T1 = x(5)
+persistent K2 = x(6)
+persistent T2 = x(7)
+persistent K3 = x(8)
+persistent T3 = x(9)
+persistent t1 = x(10)
+persistent Dr = x(11)
 
+
+k_teor=-1/((R1+R2)/R1/R2/C)^2*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*t)-1)*(exp(((R1+R2)/R1/R2/C)*t1)-1)+1/((R1+R2)/R1/R2/C)*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(t-t1))+1/((R1+R2)/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(t-t1))-exp(((R1+R2)/R1/R2/C)*t1)));
+
+  plot(time_k_new,k_new,'b')
+  plot(t,k_teor,'r')
+  
+  
+  
+    axis([-0.00004, 0.001,-0.05,0.2]);
 endfunction
 
 function  y = f (x)
 y = zeros (3, 1);
-y(1) = x(1)-x(2)+x(3);
-y(2) = 2*x(1)-x(2)*2+x(3);
-y(3) = 9*x(1)-x(2)+x(3);
-  
+R1 = x(1)
+R2 = x(2)
+C = x(3)
+persistent K1 = x(4)
+persistent T1 = x(5)
+persistent K2 = x(6)
+persistent T2 = x(7)
+persistent K3 = x(8)
+persistent T3 = x(9)
+persistent t1 = x(10)
+persistent Dr = x(11)
 
+
+ y(1)=-1/((R1+R2)/R1/R2/C)^2*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*T1)-1)*(exp(((R1+R2)/R1/R2/C)*T1)-1)+1/((R1+R2)/R1/R2/C)*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(T1-t1))+1/((R1+R2)/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(T1-t1))-exp(((R1+R2)/R1/R2/C)*t1)))-K1;
+  y(2)=-1/((R1+R2)/R1/R2/C)^2*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*T2)-1)*(exp(((R1+R2)/R1/R2/C)*T2)-1)+1/((R1+R2)/R1/R2/C)*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(T2-t1))+1/((R1+R2)/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(T2-t1))-exp(((R1+R2)/R1/R2/C)*t1)))-K2;
+  y(3)=-1/((R1+R2)/R1/R2/C)^2*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*T3)-1)*(exp(((R1+R2)/R1/R2/C)*T3)-1)+1/((R1+R2)/R1/R2/C)*(Dr/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(T3-t1))+1/((R1+R2)/R1/R2/C)*(exp(-((R1+R2)/R1/R2/C)*(T3-t1))-exp(((R1+R2)/R1/R2/C)*t1)))-K3;
+
+  
 
 endfunction
 
