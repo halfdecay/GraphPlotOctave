@@ -134,25 +134,29 @@ function    filename = returnFileName(OSCnum)
   
    filename= "test";
    [s1,s2]=size(ls);
-   listOfOSc= dir()
-##   listOfOSc= dir()(4,1)
-   for(i=3:1:s1)
-   i
-##  listOfOSc(i).name
+   listOfOSc= dir();
 
-##   strsplit(listOfOSc(i).name,{"osc",".t"})(1,2)
-     numOflist(i)= str2double(strsplit(listOfOSc(i).name,{"osc",".t"})(1,2))
-##      if(OSCnum==numOflist(i))
-####   numOflist
-####   listOfOSc= dir()(i,1).name;
-####    dir()(i,1).name
-##   
-##      endif
-      
-    
+   for(i=3:1:s1)
+   numOflist(i)= str2double(strsplit(listOfOSc(i).name,{"osc",".t"})(1,2))     ;
    endfor
    
-   numOflist(3)
+   [s3,s4] = size(numOflist);
+
+    for(k=3:1:s4)
+    k
+    OSCnum
+    numOflist(k)
+      if(OSCnum- numOflist(k)==0)
+      numOflist(k)
+      filename= listOfOSc(k).name  
+      endif
+##
+    endfor
+filename   
+   
+   
+
+ 
    
 ##   strsplit(listOfOSc,"\n")
 ##  str1= strsplit(filename,{"osc",".t"})
