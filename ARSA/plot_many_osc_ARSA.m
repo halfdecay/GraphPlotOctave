@@ -1,7 +1,7 @@
 function plot_many_osc_ARSA()
 
   f = "Arsa_data.txt";
-  
+ 
   
   [z,k,Z,T,Umon,wave,oscnum,Dose]=getdataArsa(f);
 
@@ -9,12 +9,16 @@ function plot_many_osc_ARSA()
 
   
   
-##oscillograms = [3:13,15:20]
-####[s5,s6]=size(oscillograms)
+oscillograms = [3:13,15:20]
+[s5,s6]=size(oscillograms)
+## global dataApprox = zeros (s6, 2);
+##  k=zeros (s6, 1)
+##  l=zeros (s6, 1);
 ##for(kapa=1:1:s6)
-##kapa
-##  OSCnum =oscillograms(kapa)
-OSCnum =8
+kapa=11
+
+  OSCnum =oscillograms(kapa)
+##OSCnum =8
   
   plotName=strcat("T",int2str( T(OSCnum)),"_wave",int2str( wave(OSCnum)),"_dose" ,int2str( Dose(OSCnum)/10^(8)),"e+8_osc",int2str( oscnum(OSCnum)),".png")         ;
   Umon(OSCnum);
@@ -58,13 +62,14 @@ OSCnum =8
   RNZ =-10*(log10(power/ave_offset));    
   [a,b]=size(time_new);
   [c,d]= max(RNZ);
-  k=1;
-  l=1;
+  
   amp = 50
-  x0= [k,l,(RNZ(round(iter*1.05)+amp)+ RNZ(round(iter*1.05))+RNZ(round(iter*1.05)-amp))/3,time_new(round(iter*1.05)),(RNZ(round(a/2))+RNZ(round(a/2)-amp)+RNZ(round(a/2)+amp))/3,time_new(round(a/2)),(RNZ(round(a*0.9)+amp)+RNZ(round(a*0.9))+RNZ(round(a*0.9)-amp))/3,time_new(round(a*0.9)),RNZ(round(d*0.3)),time_new(round(d*0.3))];
+  x0= [1,1,(RNZ(round(iter*1.05)+amp)+ RNZ(round(iter*1.05))+RNZ(round(iter*1.05)-amp))/3,time_new(round(iter*1.05)),(RNZ(round(a/2))+RNZ(round(a/2)-amp)+RNZ(round(a/2)+amp))/3,time_new(round(a/2)),(RNZ(round(a*0.9)+amp)+RNZ(round(a*0.9))+RNZ(round(a*0.9)-amp))/3,time_new(round(a*0.9)),RNZ(round(d*0.3)),time_new(round(d*0.3))];;
   [x, fval, info] = fsolve (@f,x0);
-  k=x(1);
-  l=x(2);
+  k=x(1)
+  l=x(2)
+
+  
 
   for(i=1:1:a)
     t_WB(i)= time_new(i);
@@ -75,6 +80,8 @@ OSCnum =8
     endif
   endfor
   
+  
+  
   sgf3 = filtfilt(ones(1,10)/10,1,y);
   hf = figure ();
   plot(time_new,RNZ,'b',time_new,sgf3,'r');
@@ -83,11 +90,25 @@ OSCnum =8
   xlabel ( "T, s");  
   mainPath=pwd
   cd ("Graphs")
-  a=12
+
   print (hf, plotName,"-solid");
-  dlmwrite ("file.txt", a, "delimiter", "&", "newline", "\n")
+  
+  
+ strArr =strcat( int2str( T(OSCnum)),",",int2str( wave(OSCnum)),"," ,num2str( Dose(OSCnum)),"," ,int2str( oscnum(OSCnum)),"," ,num2str(k) , ',',num2str(l),'\n')
+  fout = fopen('output.txt', 'at+');
+  fprintf (fout,strArr);
+  
+  
+  fclose(fout);
   cd (mainPath)
-  clear k, l
+##  close(hf)
+  
+##  
+##  dataApprox(kapa,1)=k
+##  dataApprox(kapa,2)=l
+
+   
+  
 ##  endfor
 
   
