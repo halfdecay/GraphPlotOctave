@@ -9,8 +9,12 @@ function plot_many_osc_ARSA()
 
   
   
-
-  OSCnum =5
+##oscillograms = [3:13,15:20]
+####[s5,s6]=size(oscillograms)
+##for(kapa=1:1:s6)
+##kapa
+##  OSCnum =oscillograms(kapa)
+OSCnum =8
   
   plotName=strcat("T",int2str( T(OSCnum)),"_wave",int2str( wave(OSCnum)),"_dose" ,int2str( Dose(OSCnum)/10^(8)),"e+8_osc",int2str( oscnum(OSCnum)),".png")         ;
   Umon(OSCnum);
@@ -31,7 +35,7 @@ function plot_many_osc_ARSA()
   order = 13;
   sgf = sgolayfilt(volt,order,order+2);
   sgf1 = filtfilt(ones(1,10)/10,6,sgf);
-  hold on
+##  hold on
   time_new = time(10:size(time)-10);
   volt_new = sgf1(10:size(sgf1)-10);
 
@@ -57,7 +61,7 @@ function plot_many_osc_ARSA()
   k=1;
   l=1;
   amp = 50
-  x0= [k,l,(RNZ(round(iter*1.05)+amp)+ RNZ(round(iter*1.05))+RNZ(round(iter*1.05)-amp))/3,time_new(round(iter*1.05)),(RNZ(round(a/2))+RNZ(round(a/2)-amp)+RNZ(round(a/2)+amp))/3,time_new(round(a/2)),(RNZ(round(a*0.9)+amp)+RNZ(round(a*0.9))+RNZ(round(a*0.9)-amp))/3,time_new(round(a*0.9)),RNZ(round(d*0.3)),time_new(round(d*0.3))]
+  x0= [k,l,(RNZ(round(iter*1.05)+amp)+ RNZ(round(iter*1.05))+RNZ(round(iter*1.05)-amp))/3,time_new(round(iter*1.05)),(RNZ(round(a/2))+RNZ(round(a/2)-amp)+RNZ(round(a/2)+amp))/3,time_new(round(a/2)),(RNZ(round(a*0.9)+amp)+RNZ(round(a*0.9))+RNZ(round(a*0.9)-amp))/3,time_new(round(a*0.9)),RNZ(round(d*0.3)),time_new(round(d*0.3))];
   [x, fval, info] = fsolve (@f,x0);
   k=x(1);
   l=x(2);
@@ -79,10 +83,12 @@ function plot_many_osc_ARSA()
   xlabel ( "T, s");  
   mainPath=pwd
   cd ("Graphs")
-  
+  a=12
   print (hf, plotName,"-solid");
+  dlmwrite ("file.txt", a, "delimiter", "&", "newline", "\n")
   cd (mainPath)
-  
+  clear k, l
+##  endfor
 
   
 endfunction
