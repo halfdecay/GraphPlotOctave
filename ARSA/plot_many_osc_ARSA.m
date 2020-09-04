@@ -6,16 +6,16 @@ function plot_many_osc_ARSA()
   [z,k,Z,T,Umon,wave,oscnum,Dose]=getdataArsa(f);
 
   oscnum;
-
+length_fiber = 0.00045;
   
   
-oscillograms = [3:13,15:20]
+oscillograms = [2:13,15:22]
 [s5,s6]=size(oscillograms)
 ## global dataApprox = zeros (s6, 2);
 ##  k=zeros (s6, 1)
 ##  l=zeros (s6, 1);
 ##for(kapa=1:1:s6)
-kapa=11
+kapa=18
 
   OSCnum =oscillograms(kapa)
 ##OSCnum =8
@@ -68,9 +68,9 @@ kapa=11
   [x, fval, info] = fsolve (@f,x0);
   k=x(1)
   l=x(2)
-
-  
-
+##  l=10e+24
+##  Dose(OSCnum)=
+ [s7,s8]=size(time_new)
   for(i=1:1:a)
     t_WB(i)= time_new(i);
     if(t_WB(i)<=0)
@@ -81,26 +81,55 @@ kapa=11
   endfor
   
   
+  t_WB1 = linspace(time_new(1),time_new(s7)*10,5000);
+  [s9,s10]=size(t_WB1)
+    for(i=1:1:s10)
+    
+    if(t_WB1(i)<=0)
+    y1(i) = 0;
+    else
+    y1(i) = k/l*(t_WB1(i)/l).^(k-1).*exp(-(t_WB1(i)./l).^k);
+    endif
+  endfor
+  
   
   sgf3 = filtfilt(ones(1,10)/10,1,y);
   hf = figure ();
-  plot(time_new,RNZ,'b',time_new,sgf3,'r');
+  
+  norm_RNZ = zeros(2,1)
+  norm_RNZ(1)=150
+  norm_RNZ(2)=150
+   time_norm = zeros(2,1)
+ time_norm(1)=time_new(1)
+  time_norm(2)=t_WB1(s10)
+     time_norm1 = zeros(2,1)
+ time_norm1(1)=time_new(1)
+  time_norm1(2)=time_new(s7)
+  
+  
+##  plot(time_new,RNZ,'b',time_new,sgf3,'r');
+  TimeOrder = 10000
+##  plot(time_new,RNZ/length_fiber,'b',time_new,sgf3/length_fiber,'r',time_norm,norm_RNZ,'bk');
+##  plot(time_new*TimeOrder,RNZ/length_fiber,'b',time_norm*TimeOrder,norm_RNZ,'bk',t_WB1*TimeOrder,y1/length_fiber,'r',time_new*TimeOrder,sgf3/length_fiber,'r');
+  trans= 1
+  plot(time_new*TimeOrder,RNZ/length_fiber*trans,'b',time_norm1*TimeOrder,norm_RNZ,'bk');
   grid minor on
-  ylabel ("RNZ, dB");
-  xlabel ( "T, s");  
+  ylabel ("РНЗ, дБ/км");
+  xlabel ( "t, мс");  
   mainPath=pwd
   cd ("Graphs")
 
   print (hf, plotName,"-solid");
   
   
- strArr =strcat( int2str( T(OSCnum)),",",int2str( wave(OSCnum)),"," ,num2str( Dose(OSCnum)),"," ,int2str( oscnum(OSCnum)),"," ,num2str(k) , ',',num2str(l),'\n')
+ strArr =strcat( int2str( T(OSCnum)),",",int2str( wave(OSCnum)),"," ,num2str( Dose(OSCnum)*trans),"," ,int2str( oscnum(OSCnum)),"," ,num2str(k) , ',',num2str(l),'\n')
   fout = fopen('output.txt', 'at+');
   fprintf (fout,strArr);
   
   
   fclose(fout);
   cd (mainPath)
+
 ##  close(hf)
   
 ##  
