@@ -1,4 +1,4 @@
-function plot_many_osc_ARSA()
+function plot_osc_ARSA()
 
   f = "Arsa_data.txt";
  
@@ -74,13 +74,15 @@ kapa=8
   l=x(2)
 
   
-
+##l=82.68 ## 11osc
+##l=473.1684 ## 11osc
   for(i=1:1:a)
     t_WB(i)= time_new(i);
     if(t_WB(i)<=0)
     y(i) = 0;
     else
     y(i) = k/l*(t_WB(i)/l).^(k-1).*exp(-(t_WB(i)./l).^k);
+##    y(i) = 1-exp(-(t_WB(i)./l).^k);
     endif
   endfor
   
